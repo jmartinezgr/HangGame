@@ -14,6 +14,10 @@ class game():
     def __init__(self,player):
         self.player = player
         self.tries = 0
+        self.choice_type_game(self.player.game)
+      
+
+    def choice_type_game(self,type):
         #Dependiendo del juego desarrollamos los tableros y porque reemplazaremos cada linea
         if self.player.game == 'H':
             self.table = [[None]*3 for i in range(3)]
@@ -26,7 +30,6 @@ class game():
                 ('/',2,0),
                 ("\\",2,2)
             ]
-        
 
     def get_table(self):
         tableStr = ' +---+\n |   |\n'
