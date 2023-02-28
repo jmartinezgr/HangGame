@@ -22,7 +22,6 @@ class game():
         self.choice_type_game(self.player.game)
         self.choiceWord()
 
-
     def choiceWord(self):
         print()
         print('Resolviendo el listado de categorias...')
@@ -41,7 +40,6 @@ class game():
         print(f'Seleccionando al azar una palabra de la categoría {self.selectedCategory}')
 
         self.uncompleteword = [None]*len(self.word)
-
         print(self.word)
 
     def choice_type_game(self,type):
@@ -84,8 +82,8 @@ class game():
         for i in range(len(self.failedLetters)):
             lista+= self.failedLetters[i]
             lista+=' '
-        print('Letras fallidas:', 'Aun no se han cometido errores' if self.tries == 0 else lista)
-        
+        print('Letras fallidas:', 'Aun no se han cometido errores' if len(self.failedLetters) == 0 else lista)
+        #Peticion de la letra
         while True:
             letter = input('Indique una letra o pulse (+) para elegir una letra al azar: ')
             if letter == '+':
@@ -95,7 +93,6 @@ class game():
                         return self.checkWin()
                     elif letterInputed == False:
                         return self.wrongWord()
-                    break
                 break
             else:
                 pass
@@ -106,12 +103,13 @@ class game():
             return None
         else:
             if letter in self.word:  
-                if letter in self.uncompleteWord:
+                if letter in self.uncompleteword:
                     return None
                 else:
                     self.setLetter(letter=letter)
                     return True
             else:
+                self.failedLetters.append(letter)
                 return False  
 
     def setLetter(self,letter):
@@ -123,10 +121,10 @@ class game():
         pass
 
     def checkWin(self):
-        if self.word == str(self.uncompleteword):
-            return True
-        
-        return False
+        for i in range(len(self.word)):
+            if self.word[i] != self.uncompleteword[i]:
+                return False
+        return True
 
 #Inicia el juego
 
@@ -138,4 +136,7 @@ player.get_game()
 juego = game(player)
 
 while True:
-    juego.inputLetter()
+    if juego.inputLetter():
+        break
+
+print('Ganaste el puto game bro')
