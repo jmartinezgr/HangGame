@@ -62,7 +62,7 @@ class game():
             for i in range(3):
                 tableStr+= " "
                 for j in range(3):
-                    tableStr += self.table[i][j].piece if self.table[i][j] else " "
+                    tableStr += self.table[i][j] if self.table[i][j] else " "
                 tableStr+=" |\n"
             tableStr+='     |\n =====\n'
             return tableStr         
@@ -84,19 +84,38 @@ class game():
             lista+=' '
         print('Letras fallidas:', 'Aun no se han cometido errores' if len(self.failedLetters) == 0 else lista)
         #Peticion de la letra
+        print()       
         while True:
             letter = input('Indique una letra o pulse (+) para elegir una letra al azar: ')
             if letter == '+':
+                print('Seleccionando letra al azar...')
                 while True:
-                    letterInputed = self.getLetter(random.choice(string.ascii_lowercase))
+                    select = random.choice(string.ascii_lowercase)
+                    letterInputed = self.getLetter(select)
                     if letterInputed == True:
+                        print(f'Letra seleccionada: {select}')
                         return self.checkWin()
                     elif letterInputed == False:
+                        print(f'Letra seleccionada: {select}')
                         return self.wrongWord()
                 break
             else:
-                pass
-
+                try:
+                    taster = float(letter)
+                    print('Debes ingresar una letra del abedecedario...')
+                except:
+                    X = self.getLetter(letter=letter)
+                    if X == True:
+                        if self.tries != 0 :
+                            print('¡Muchachos! detengan el montaje del cadalso por ahora')
+                            print(self.get_table())
+                        return self.checkWin()
+                    elif X == False:
+                        return self.wrongWord()
+                    else:
+                        print('Esa letra ya se habia usado antes... ')
+                        return self.wrongWord()
+            
         
     def getLetter(self,letter):
         if letter in self.failedLetters:
@@ -118,7 +137,19 @@ class game():
                 self.uncompleteword[i] = letter                   
 
     def wrongWord(self):
-        pass
+        if self.player.game == 'H':
+            if self.tries == 0:
+                print('Lo lamento pero empezo el montaje del cadalso')
+                print(self.get_table())
+                
+            else:
+                x = self.replaces[self.tries-1]
+                self.table[x[1]][x[2]] = x[0]
+                print('Sigan con el montaje del cadalso!!')
+                print(self.get_table())
+        self.tries+=1
+
+        return False
 
     def checkWin(self):
         for i in range(len(self.word)):
