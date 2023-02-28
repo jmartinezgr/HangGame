@@ -48,9 +48,8 @@ class game():
             self.table = [[None]*3 for i in range(3)]
             self.replaces = [
                 ('O',0,1),
-                ('|',0,1),
-                ('/',1,0),
                 ('|',1,1),
+                ('/',1,0),
                 ("\\",1,2),
                 ('/',2,0),
                 ("\\",2,2)
@@ -60,10 +59,10 @@ class game():
         if self.player.game == 'H':
             tableStr = ' +---+\n |   |\n'
             for i in range(3):
-                tableStr+= " "
+                tableStr+= ""
                 for j in range(3):
                     tableStr += self.table[i][j] if self.table[i][j] else " "
-                tableStr+=" |\n"
+                tableStr+="  |\n"
             tableStr+='     |\n =====\n'
             return tableStr         
 
@@ -116,7 +115,6 @@ class game():
                         print('Esa letra ya se habia usado antes... ')
                         return self.wrongWord()
             
-        
     def getLetter(self,letter):
         if letter in self.failedLetters:
             return None
@@ -157,6 +155,25 @@ class game():
                 return False
         return True
 
+    def whioutTries(self):
+        if self.tries == 7:
+            print('Has muerto!!!')
+            self.get_table()
+            return True
+        return False
+
+    def restart():
+        while True:
+            X = input('¿Desean volver a tomar la partida Si [S] No [N]?:')
+            if X == 'S':
+                pass
+            elif X == 'N':
+                print('*** GRACIAS POR JUGAR ***')
+                return False
+            else:
+                print('Debes ingresar una opcion valida!!')
+
+
 #Inicia el juego
 
 print('*** HORCA O GUILLOTINA ***')
@@ -169,5 +186,9 @@ juego = game(player)
 while True:
     if juego.inputLetter():
         break
+    else:
+        if juego.whioutTries():
+            break
+    
 
 print('Ganaste el puto game bro')
