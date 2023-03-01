@@ -1,0 +1,24 @@
+{
+    "Animales":[
+        "leon",
+        "mariposa",
+        "perro",
+        "gato",
+        "oveja",
+        "cocodrilo",
+        "iguana"
+    ],
+    "Deportes":[
+        "futbol",
+        "baloncesto",
+        "tennis",
+        "baseball"
+    ],
+    "Paises":[
+        "colombia",
+        "argentina",
+        "venezuela",
+        "mexico",
+        "polonia"
+    ]
+}

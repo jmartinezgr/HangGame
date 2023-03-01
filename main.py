@@ -40,7 +40,6 @@ class game():
         print(f'Seleccionando al azar una palabra de la categoría {self.selectedCategory}')
 
         self.uncompleteword = [None]*len(self.word)
-        print(self.word)
 
     def choice_type_game(self,type):
         #Dependiendo del juego desarrollamos los tableros y porque reemplazaremos cada linea
@@ -73,15 +72,20 @@ class game():
 
         return uncompleteString
 
-    def inputLetter(self):
-        print(f'Categoria: {self.selectedCategory}')
-        print('La palabra seleccionada es:', self.uncompleteWord())
+    def failed(self):
         #Crear string de las letras que han fallado
         lista = ''
         for i in range(len(self.failedLetters)):
             lista+= self.failedLetters[i]
             lista+=' '
         print('Letras fallidas:', 'Aun no se han cometido errores' if len(self.failedLetters) == 0 else lista)
+        
+
+    def inputLetter(self):
+        print()
+        print(f'Categoria: {self.selectedCategory}')
+        print('La palabra seleccionada es:', self.uncompleteWord())
+        self.failed()
         #Peticion de la letra
         print()       
         while True:
@@ -93,6 +97,9 @@ class game():
                     letterInputed = self.getLetter(select)
                     if letterInputed == True:
                         print(f'Letra seleccionada: {select}')
+                        if self.tries != 0:    
+                            print('¡Muchachos! detengan el montaje del cadalso por ahora')
+                            print(self.get_table())
                         return self.checkWin()
                     elif letterInputed == False:
                         print(f'Letra seleccionada: {select}')
@@ -162,17 +169,28 @@ class game():
             return True
         return False
 
-    def restart():
+    def restart(self):
         while True:
             X = input('¿Desean volver a tomar la partida Si [S] No [N]?:')
             if X == 'S':
-                pass
+                return True
             elif X == 'N':
                 print('*** GRACIAS POR JUGAR ***')
                 return False
             else:
                 print('Debes ingresar una opcion valida!!')
 
+    def win(self):
+        print('La palabra seleccionada es:', self.uncompleteWord())
+        self.failed()
+        print(f'¡Muy bien! La palabra es: {self.word}')
+                
+    def clear(self):
+        self.choiceWord()
+        self.tries = 0
+        self.uncompleteword = [None]*len(self.word)
+        self.table = [[None]*3 for i in range(3)] 
+        self.failedLetters = []
 
 #Inicia el juego
 
@@ -185,10 +203,18 @@ juego = game(player)
 
 while True:
     if juego.inputLetter():
-        break
+        juego.win()
+        print()
+        if juego.restart():
+            print('*******************************************************************************')
+            juego.clear()
+        else:
+            break
     else:
         if juego.whioutTries():
-            break
-    
-
-print('Ganaste el puto game bro')
+            print()
+            if juego.restart():
+                print('*******************************************************************************')
+                juego.clear()
+            else:
+                break
