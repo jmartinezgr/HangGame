@@ -53,6 +53,16 @@ class game():
                 ('/',2,0),
                 ("\\",2,2)
             ]
+        else:
+            self.table = " |\n |\n |\n |\n |\n |\n |\n |\n |==="
+            self.replaces = [
+                " |   |\n |   |\n |   |\n |   |\n |   |\n |   |\n |   |\n |   |\n |===|",
+                " |===|\n |   |\n |   |\n |   |\n |   |\n |   |\n |   |\n |   |\n |===|",
+                " |===|\n |   |\n |   |\n |   |\n |   |\n |   |\n |   |\n |\ /|\n |===|",
+                " |===|\n |   |\n |   |\n |   |\n |   |\n |   |\n |/-\|\n |\ /|\n |===|",
+                " |===|\n || /|\n ||/ |\n |   |\n |   |\n |   |\n |/-\|\n |\ /|\n |===|",  
+                " |===|\n || /|\n ||/ |\n |   |\n |   |\n |   |\n |/-\|\n |\o/|\n |===|",                
+            ]
 
     def get_table(self):
         if self.player.game == 'H':
@@ -63,7 +73,9 @@ class game():
                     tableStr += self.table[i][j] if self.table[i][j] else " "
                 tableStr+="  |\n"
             tableStr+='     |\n =====\n'
-            return tableStr         
+            return tableStr   
+        if self.player.game == "G":
+            return self.table      
 
     def uncompleteWord(self):
         uncompleteString = ' '
@@ -151,6 +163,15 @@ class game():
                 x = self.replaces[self.tries-1]
                 self.table[x[1]][x[2]] = x[0]
                 print('Sigan con el montaje del cadalso!!')
+                print(self.get_table())
+        else:
+            if self.tries == 0:
+                print('Lo lamento a empezado el montaje de la guillotina')
+                print(self.get_table())
+            else:
+                print('Sigan con el montaje de la guilltina')
+                print()
+                self.table = self.replaces[self.tries-1]
                 print(self.get_table())
         self.tries+=1
 
